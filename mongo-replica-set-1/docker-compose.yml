@@ -5,7 +5,18 @@ services:
     image: mongo:latest
     container_name: mongodb
     hostname: mongodb
+    command:
+      [
+        "--replSet",
+        "rs0",
+        "--bind_ip_all",
+        "--port",
+        "27017",
+        "--keyFile",
+        "/etc/mongodb/pki/keyfile"
+      ]
     volumes:
+      - ${PWD}/rs_keyfile:/etc/mongodb/pki/keyfile
       - ./mongodb/initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
       - mongodb-data:/data/db/
       - mongodb-log:/var/log/mongodb/
@@ -15,28 +26,35 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     ports:
-      - ${MONGO_INITDB_PORT}:${MONGO_INITDB_PORT}
+      - "27017:27017" # Explicitly mapping the port for clarity
     networks:
-      - mongodb_network
+      mongodb_network:
+        aliases:
+          - mongodb
+    healthcheck:
+      test: [ "CMD", "echo", "'db.runCommand(\"ping\").ok'" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
-  mongo-express:
-    image: mongo-express:latest
-    container_name: mongo-express
-    restart: always
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      ME_CONFIG_MONGODB_PORT: ${MONGO_INITDB_PORT}
-      ME_CONFIG_MONGODB_SERVER: ${ME_CONFIG_MONGODB_SERVER}
-      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_EXPRESS_USERNAME}
-      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_EXPRESS_PASSWORD}
-      ME_CONFIG_MONGODB_ENABLE_ADMIN: ${ME_CONFIG_MONGODB_ENABLE_ADMIN}
-    ports:
-      - 8081:8081
-    networks:
-      - mongodb_network
-    depends_on:
-      - mongodb
+  # mongo-express:
+  #   image: mongo-express:latest
+  #   container_name: mongo-express
+  #   restart: always
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+  #     ME_CONFIG_MONGODB_PORT: ${MONGO_INITDB_PORT}
+  #     ME_CONFIG_MONGODB_SERVER: ${ME_CONFIG_MONGODB_SERVER}
+  #     ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_EXPRESS_USERNAME}
+  #     ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_EXPRESS_PASSWORD}
+  #     ME_CONFIG_MONGODB_ENABLE_ADMIN: ${ME_CONFIG_MONGODB_ENABLE_ADMIN}
+  #   ports:
+  #     - 8081:8081
+  #   networks:
+  #     - mongodb_network
+  #   depends_on:
+  #     - mongodb
 
 volumes:
   mongodb-data:

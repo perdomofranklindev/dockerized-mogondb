@@ -1,0 +1,60 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo 
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: admin 
+    entrypoint:
+      - bash
+      - -c
+      - |
+          cp /keyfile /mongo_keyfile
+          chmod 400 /mongo_keyfile
+          chown 999:999 /mongo_keyfile
+          exec docker-entrypoint.sh $$@
+    command: "mongod --bind_ip_all --replSet rs0 --keyFile /mongo_keyfile"
+    volumes:
+      - ./keyfile:/keyfile
+    networks:
+      - mongodb_network
+  mongo-setup:
+    image: mongo:latest
+    container_name: mongo_setup
+    depends_on:
+      - mongo
+    restart: on-failure
+    entrypoint: ["/bin/bash", "/setup_mongo.sh"]
+    volumes:
+      - ./setup_mongo.sh:/setup_mongo.sh
+    networks:
+      - mongodb_network
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: 'root'
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 'secret'
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_SERVER: 'mongo,mongo_setup'
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: password
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: true
+    ports:
+      - 8081:8081
+    networks:
+      - mongodb_network
+    depends_on:
+      - mongo
+      - mongo-setup
+
+networks:
+  mongodb_network:
+    driver: bridge
+    name: mongo-network
