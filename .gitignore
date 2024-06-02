@@ -1,2 +1,2 @@
-./mongo-replica-set-1/rs_keyfile
-./mongo-replica-set-4/rs_keyfile
+**/rs_keyfile
+**/rs_keyfile
