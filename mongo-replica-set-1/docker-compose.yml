@@ -26,7 +26,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     ports:
-      - "27017:27017" # Explicitly mapping the port for clarity
+      - ${MONGO_INITDB_PORT}:${MONGO_INITDB_PORT}
     networks:
       mongodb_network:
         aliases:
@@ -36,7 +36,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-
   # mongo-express:
   #   image: mongo-express:latest
   #   container_name: mongo-express
