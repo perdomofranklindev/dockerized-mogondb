@@ -35,6 +35,13 @@ Disclaimer this only was tested on Linux Ubuntu 23, I don't know how are the ste
 4. Save the file and exit the editor.
 5. After saving the changes, try connecting again with the replica set connection string.
 
+### Inspect the IP container
+
+```bash
+docker inspect \
+  -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
+```
+
 ### Why is this required?
 
 The local machine doesn’t automatically resolve the hostnames for your MongoDB containers because Docker’s networking operates somewhat independently from your host machine’s networking. When you use localhost in your connection string, it refers to the loopback network interface of your host machine, which is why it works without additional configuration.
