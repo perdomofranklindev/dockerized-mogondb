@@ -2,7 +2,7 @@ db = db.getSiblingDB('db');
 
 db.createUser({
 	user: 'root',
-	pwd: 'password',
+	pwd: 'example',
 	roles: [
 		{
 			role: 'readWrite',
