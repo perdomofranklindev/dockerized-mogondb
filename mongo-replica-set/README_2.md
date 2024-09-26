@@ -40,4 +40,4 @@ graph TD
 
 ## References
 
-[Linux Networking: DNS](https://yuminlee2.medium.com/linux-networking-dns-7ff534113f7d#:~:text=When%20a%20Linux%20system%20needs,finds%20the%20correct%20IP%20address.)
+1. [Linux Networking: DNS](https://yuminlee2.medium.com/linux-networking-dns-7ff534113f7d#:~:text=When%20a%20Linux%20system%20needs,finds%20the%20correct%20IP%20address.)
