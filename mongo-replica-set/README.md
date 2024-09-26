@@ -61,6 +61,7 @@ Well, you have to figure it out, probably the providers already offer this solut
 mongodb://root:example@localhost:27017,localhost:27018,localhost:27019/?replicaSet=rs0
 ```
 
-## Reference
+## References
 
-[https://medium.com/@JosephOjo/mongodb-replica-set-with-docker-compose-5ab95c02af0d](https://medium.com/@JosephOjo/mongodb-replica-set-with-docker-compose-5ab95c02af0d)
+1. [MongoDB Replica Set with Docker-compose](https://medium.com/@JosephOjo/mongodb-replica-set-with-docker-compose-5ab95c02af0d)
+2. [Why Use DNS and IP Configuration?](/README_2.md)
