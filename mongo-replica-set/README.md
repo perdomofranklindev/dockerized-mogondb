@@ -64,4 +64,4 @@ mongodb://root:example@localhost:27017,localhost:27018,localhost:27019/?replicaS
 ## References
 
 1. [MongoDB Replica Set with Docker-compose](https://medium.com/@JosephOjo/mongodb-replica-set-with-docker-compose-5ab95c02af0d)
-2. [Why Use DNS and IP Configuration?](/README_2.md)
+2. [Why Use DNS and IP Configuration?](/mongo-replica-set/README_2.md)
