@@ -2,7 +2,7 @@
 
 ## MongoDB + Mongo Express
 
-A quick way to run mongo DB [Normalized mongo](/normalized-mongodb/)
+A quick way to run mongoDB [Normalized mongo](/normalized-mongodb/)
 
 ## MongoDB + Replica Set + Mongo Express
 
